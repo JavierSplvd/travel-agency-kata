@@ -54,8 +54,3 @@ Then you can run your docker image:
 Or deploy in a K8 environment. The application port is 8080
 
 You can verify your app is up in the url [http://localhost:8080/swagger-ui/index.html]()
-
-
-  
-
-
