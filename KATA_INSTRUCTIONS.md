@@ -20,10 +20,10 @@ alojada en la nube, pero que esta situación podría cambiar la semana que viene
 ## Solución diseñada
 
 Para dar respuesta ágil a los posibles cambios, se ha optado por desarrollar el proyecto haciendo uso
-de la arquitectura hexagonal. 
+de la arquitectura hexagonal.
 
 Sin entrar en detalles, la arquitectura hexagonal permite aislar todas las funciones lógicas de negocio
-de la infraestructura en la que se implementan. Por ejemplo, el servicio que crea usuarios, no sabe en qué 
+de la infraestructura en la que se implementan. Por ejemplo, el servicio que crea usuarios, no sabe en qué
 base de datos se guardan. Todo ello se realiza separando el código en 3 capas:
 
 - Domain: contiene los objetos de valor del negocio, y la lógica más interna.
@@ -41,11 +41,11 @@ El proyecto consta de las siguientes capas:
     - Customer: representa los datos del cliente
 - Application:
   - Contiene los puertos que para interactuar con la infraestructura (un puerto es una capa de abstracción, normalmente una interfaz)
-  - Contiene los comandos y las consultas 
+  - Contiene los comandos y las consultas
 - Infrastructure:
   - Contiene la implementación de la infraestructura:
     - Los controladores para la API rest y sus DTO's
-    - Los repositorios 
+    - Los repositorios
     - Y de momento nada más, ya que no hay más infraestructura, pero podría contener consumidores de Kafka, gestión de archivos, llamadas a otras API's, etc.
 
 Se muestra el diagrama de clases:
@@ -60,7 +60,7 @@ Se muestran los diagrams de secuencia de la creación de un cliente:
 
 ## Descripción del cambio solicitado
 
-Lo que se requiere es modificar el microservicio actual para que en lugar de utilizar un repositorio en memoria, 
+Lo que se requiere es modificar el microservicio actual para que en lugar de utilizar un repositorio en memoria,
 utilize una base de datos relacional PostgreSQL. Para evitar problemas de dependencia, y centrarnos en la tarea,
 se proporciona lo siguiente:
 
@@ -73,14 +73,14 @@ La interfaz CustomersJPAPRepository es la que interactúa con la base de datos.
 
 ## Y por fin, descripción de la tarea
 
-Como se podrá comprobar al observar las clases, el Port [CustomersRepository](src/main/java/com/breadhardit/travelagencykata/infrastructure/persistence/entity/CustomerEntity.java) 
-no encaja con la interfaz [CustomersJPARepository](src/main/java/com/breadhardit/travelagencykata/infrastructure/persistence/repository/CustomersJPARepository.java) 
+Como se podrá comprobar al observar las clases, el Port [CustomersRepository](src/main/java/com/breadhardit/travelagencykata/infrastructure/persistence/entity/CustomerEntity.java)
+no encaja con la interfaz [CustomersJPARepository](src/main/java/com/breadhardit/travelagencykata/infrastructure/persistence/repository/CustomersJPARepository.java)
 así que para que encaje, tendremos que aplicar un patrón de diseño... pero, cúal?
 
 Aprovechando que estamos tocando el código, vamos a comprobar si hay algún punto que viole alguno
 de los principios SOLID. Y si es así, lo vamos a corregir.
 
-Y ya por último, observa bien el código, en él se pueden ver algunos de los principios SOLID y patrones que 
+Y ya por último, observa bien el código, en él se pueden ver algunos de los principios SOLID y patrones que
 hemos estudiado. Crea un archivo RESPONSE.md en la raíz del proyecto e indica:
 
 - Qué principios SOLID se han utilizado para codificar este proyecto e indica algún ejemplo
@@ -102,10 +102,10 @@ En resumen:
 ## Pistas y consejos
 
 - Hay un montón de anotaciones en el código. La mayoría son de Lombok. Si no lo conoces, es una librería superútil que te ayudará
-a desarrollar más rápido. Se encarga de crear, en tiempo de compilación, un montón de código que no nos aporta codificar: 
+a desarrollar más rápido. Se encarga de crear, en tiempo de compilación, un montón de código que no nos aporta codificar:
 constructores, getters, setters, toString, definición de Logger's, etc. Instálate el plugin de Lombok para tu IDE y verás como ocurre la magia.
 - En spring se utiliza la inyección de dependencias. Sin entrar en detalles, aquellas clases que queramos que se inyecten
-según spring crea que se necesiten, se inyectan con las anotaciones correspondientes. Si creas una nueva clase que pienses que 
+según spring crea que se necesiten, se inyectan con las anotaciones correspondientes. Si creas una nueva clase que pienses que
 se debe inyectar (un servicio, un repositorio, etc.) acuérdate de anotarla con la anotación correspondiente.
 - No te líes en intentar entender como se arranca la base de datos y se crean las tablas. Es magia xD. Si tienes curiosidad
 sobre el tema, me puedes enviar un correo, y te lo explico.
