@@ -12,6 +12,7 @@ jobs:
           java-version: '21'
       - run: mvn test
   build:
+    needs: tests
     runs-on: ubuntu-latest
     environment: poc
     steps:
@@ -28,3 +29,9 @@ jobs:
       - run: mvn install
       - run: docker build -t jsvnext/travel-agency-kata:latest .
       - run: docker push jsvnext/travel-agency-kata:latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: poc
+    steps:
+      - run: curl ${{ secrets.DEPLOY_WEBHOOK_URL }}
