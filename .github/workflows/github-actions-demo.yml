@@ -19,7 +19,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
       - run: mvn install
       - run: docker build -t jsvnext/travel-agency-kata:latest .
-      - run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
       - run: docker push jsvnext/travel-agency-kata:latest
