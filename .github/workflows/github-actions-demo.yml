@@ -11,3 +11,15 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - run: mvn test
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - run: mvn install
+      - run: docker build -t jsvnext/travel-agency-kata:latest .
+      - run: docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
+      - run: docker push jsvnext/travel-agency-kata:latest
