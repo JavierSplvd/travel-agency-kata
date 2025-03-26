@@ -1,0 +1,8 @@
+name: Java CI
+run-name: Run, build and deploy
+on: [push]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - run: mvn test
